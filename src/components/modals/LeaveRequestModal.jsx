@@ -1,0 +1,67 @@
+import React, { useState } from 'react';
+import Modal from '../common/Modal';
+
+/**
+ * LeaveRequestModal Component - Form for requesting leave
+ */
+const LeaveRequestModal = ({ onClose, onSubmit }) => {
+  const [formData, setFormData] = useState({
+    date: '',
+    type: 'sick',
+    reason: ''
+  });
+
+  const handleSubmit = () => {
+    if (!formData.date) {
+      alert('Pick date');
+      return;
+    }
+    onSubmit(formData);
+  };
+
+  return (
+    <Modal title="Request Leave" onClose={onClose}>
+      <div className="grid gap-4">
+        <div>
+          <label className="text-[var(--clr-muted)] text-sm">Date</label>
+          <input
+            type="date"
+            className="input mt-1"
+            value={formData.date}
+            onChange={e => setFormData({ ...formData, date: e.target.value })}
+          />
+        </div>
+        <div>
+          <label className="text-[var(--clr-muted)] text-sm">Type</label>
+          <select
+            className="select mt-1"
+            value={formData.type}
+            onChange={e => setFormData({ ...formData, type: e.target.value })}
+          >
+            <option value="sick">Sick Leave</option>
+            <option value="casual">Casual Leave</option>
+            <option value="emergency">Emergency Leave</option>
+          </select>
+        </div>
+        <div>
+          <label className="text-[var(--clr-muted)] text-sm">Reason</label>
+          <textarea
+            className="mt-1 w-full"
+            rows="4"
+            placeholder="Explain your reason..."
+            value={formData.reason}
+            onChange={e => setFormData({ ...formData, reason: e.target.value })}
+          />
+        </div>
+        <button className="btn btn-primary px-4 py-2" onClick={handleSubmit}>
+          Submit
+        </button>
+      </div>
+    </Modal>
+  );
+};
+
+LeaveRequestModal.displayName = 'LeaveRequestModal';
+
+export default LeaveRequestModal;
+
