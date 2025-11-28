@@ -1,5 +1,6 @@
 import React, { useState, useEffect, useMemo } from "react";
 import Login from "./Login";
+import Topbar from "./Topbar";
 
 const todayKey=()=>new Date().toISOString().slice(0,10);
     const fmtDate=(d)=>new Date(d).toLocaleDateString("en-US",{weekday:"long",year:"numeric",month:"long",day:"numeric"});
@@ -15,18 +16,6 @@ const todayKey=()=>new Date().toISOString().slice(0,10);
       <button className="btn btn-ghost px-3 py-1.5 text-white relative" onClick={onClick} title="Notifications">
         <span className="text-white">Bell</span> {count>0 && <span className="absolute -top-2 -right-2 bg-red-500 text-white text-xs px-2 py-0.5 rounded-full">{count}</span>}
       </button>
-    );
-    const Topbar = ({right}) => (
-      <div className="topbar bg-[#0f1a3a] text-white">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-3 flex items-center justify-between">
-          <div className="flex items-center gap-3">
-            <span className="brand-dot"></span>
-            <span className="font-bold tracking-wide">AttendX</span>
-            <span className="text-white/60 hidden sm:inline">  HR   Attendance  Tasks  EOD  Docs Chat</span>
-          </div>
-          <div className="flex items-center gap-2">{right}</div>
-        </div>
-      </div>
     );
     const Shell=({title,children,onClose,maxW="max-w-lg"})=>(
       <div className="fixed inset-0 bg-black/30 flex items-center justify-center p-4 z-50">
