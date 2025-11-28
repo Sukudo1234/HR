@@ -13,7 +13,7 @@ const HeaderActions = memo(({ unreadCount, onOpenChat, onOpenNotifications, onLo
       <span className="text-white">Chat</span>
     </button>
     <button
-      className="btn btn-ghost px-3 py-1.5 text-white relative"
+      className="btn btn-ghost px-3 py-1.5 border border-white/40 hover:bg-white/10 text-white relative"
       onClick={onOpenNotifications}
       title="Notifications"
     >

@@ -14,15 +14,10 @@ const Login = memo(({ onLogin }) => {
     setPassword(e.target.value);
   }, []);
 
-  const handleSubmit = useCallback(() => {
+  const handleSubmit = useCallback((e) => {
+    e.preventDefault();
     onLogin(email, password);
   }, [email, password, onLogin]);
-
-  const handleKeyPress = useCallback((e) => {
-    if (e.key === "Enter") {
-      handleSubmit();
-    }
-  }, [handleSubmit]);
 
   return (
     <div className="min-h-screen flex items-center justify-center py-10 md:py-12">
@@ -33,13 +28,12 @@ const Login = memo(({ onLogin }) => {
             </div>
             <p className="text-[var(--clr-muted)] text-sm mt-1">Sign in to continue</p>
           </div>
-          <div className="grid gap-3">
+          <form onSubmit={handleSubmit} className="grid gap-3">
             <input
               className="input"
               placeholder="Email"
               value={email}
               onChange={handleEmailChange}
-              onKeyPress={handleKeyPress}
               type="email"
               autoComplete="email"
             />
@@ -48,18 +42,16 @@ const Login = memo(({ onLogin }) => {
               placeholder="Password"
               value={password}
               onChange={handlePasswordChange}
-              onKeyPress={handleKeyPress}
               type="password"
               autoComplete="current-password"
             />
             <button
               className="btn btn-primary py-2.5"
-              onClick={handleSubmit}
-              type="button"
+              type="submit"
             >
               Sign In
             </button>
-          </div>
+          </form>
           <div className="mt-6 p-4 bg-[#F9FAFB] border border-[var(--clr-border)] rounded-xl text-sm">
             {DEMO_CREDENTIALS}
           </div>
