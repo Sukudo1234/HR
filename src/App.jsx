@@ -1,4 +1,5 @@
 import React, { useState, useEffect, useMemo } from "react";
+import Login from "./Login";
 
 const todayKey=()=>new Date().toISOString().slice(0,10);
     const fmtDate=(d)=>new Date(d).toLocaleDateString("en-US",{weekday:"long",year:"numeric",month:"long",day:"numeric"});
@@ -1363,28 +1364,6 @@ const todayKey=()=>new Date().toISOString().slice(0,10);
       </>;
     };
 
-    const LoginView=({onLogin})=>{
-      const [email,setEmail]=useState(""),[password,setPassword]=useState("");
-      return <>
-        <Topbar/>
-        <div className="py-10 md:py-12">
-          <div className="max-w-md mx-auto card p-6 md:p-8">
-            <div className="text-center mb-6">
-              <div className="inline-flex items-center gap-2 justify-center text-[var(--clr-primary)] font-bold text-xl">Welcome to AttendX</div>
-              <p className="text-[var(--clr-muted)] text-sm mt-1">Sign in to continue</p>
-            </div>
-            <div className="grid gap-3">
-              <input className="input" placeholder="Email" value={email} onChange={e=>setEmail(e.target.value)} type="email"/>
-              <input className="input" placeholder="Password" value={password} onChange={e=>setPassword(e.target.value)} type="password"/>
-              <button className="btn btn-primary py-2.5" onClick={()=>onLogin(email,password)}>Sign In</button>
-            </div>
-            <div className="mt-6 p-4 bg-[#F9FAFB] border border-[var(--clr-border)] rounded-xl text-sm">
-              Demo: admin@company.com/admin123 | sub@company.com/sub123 | hr@company.com/hr123 | john@company.com/emp123
-            </div>
-          </div>
-        </div>
-      </>;
-    };
 
     const AddDocumentModal=({onClose,onSubmit,employees})=>{
       const [f,setF]=useState({employeeId:employees[0]?.id||"",title:"",docType:"Offer",file:null});
@@ -1820,7 +1799,7 @@ const todayKey=()=>new Date().toISOString().slice(0,10);
       const myNotifs = notifications.filter(n=>n.userId===currentUser?.id).slice().reverse();
 
       return <>
-        {view==="login" && <LoginView onLogin={login}/>}
+        {view==="login" && <Login onLogin={login}/>}
         {view==="employee" && currentUser && <EmployeeView
           currentUser={currentUser}
           currentTime={currentTime}
