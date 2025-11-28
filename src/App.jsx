@@ -1,6 +1,7 @@
 import React, { useState, useEffect, useMemo } from "react";
 import Login from "./Login";
 import Topbar from "./Topbar";
+import EmployeeAssessment from "./EmployeeAssessment";
 
 const todayKey=()=>new Date().toISOString().slice(0,10);
     const fmtDate=(d)=>new Date(d).toLocaleDateString("en-US",{weekday:"long",year:"numeric",month:"long",day:"numeric"});
@@ -17,6 +18,7 @@ const todayKey=()=>new Date().toISOString().slice(0,10);
         <span className="text-white">Bell</span> {count>0 && <span className="absolute -top-2 -right-2 bg-red-500 text-white text-xs px-2 py-0.5 rounded-full">{count}</span>}
       </button>
     );
+    Bell.displayName = 'Bell';
     const Shell=({title,children,onClose,maxW="max-w-lg"})=>(
       <div className="fixed inset-0 bg-black/30 flex items-center justify-center p-4 z-50">
         <div className={"card w-full "+maxW+" max-h-[90vh] overflow-hidden flex flex-col"}>
@@ -28,6 +30,7 @@ const todayKey=()=>new Date().toISOString().slice(0,10);
         </div>
       </div>
     );
+    Shell.displayName = 'Shell';
 
     const AddTaskModal=({onClose,onSubmit,employees})=>{
       const [f,setF]=useState({title:"",description:"",assignedTo:employees[0]?.id||"",deadline:"",priority:"general",link:"",file:null});
@@ -50,6 +53,7 @@ const todayKey=()=>new Date().toISOString().slice(0,10);
         <div className="flex gap-3 mt-5"><button className="btn btn-primary px-4 py-2 flex-1" onClick={save}>Create Task</button><button className="btn btn-ghost px-4 py-2 flex-1" onClick={onClose}>Cancel</button></div>
       </Shell>;
     };
+    AddTaskModal.displayName = 'AddTaskModal';
 
     const SetEmpDateForm = ({employees,onSave}) => {
       const [empId,setEmpId]=useState(employees[0]?.id||"");
@@ -80,6 +84,7 @@ const todayKey=()=>new Date().toISOString().slice(0,10);
         </div>
       );
     };
+    SetEmpDateForm.displayName = 'SetEmpDateForm';
 
     const AddCelebrationModal = ({onClose,onSubmit}) => {
       const [f,setF]=useState({date: todayKey(), title:"", description:""});
@@ -92,6 +97,7 @@ const todayKey=()=>new Date().toISOString().slice(0,10);
         </div>
       </Shell>;
     };
+    AddCelebrationModal.displayName = 'AddCelebrationModal';
 
     const EditTaskModal = ({onClose,onSubmit,task,employees}) => {
       const [f,setF]=useState(task?{title:task.title,description:task.description||"",assignedTo:task.assignedTo,deadline:task.deadline.slice(0,10),priority:task.priority||"general",link:task.link||""}:{title:"",description:"",assignedTo:employees[0]?.id||"",deadline:todayKey(),priority:"general",link:""});
@@ -109,6 +115,7 @@ const todayKey=()=>new Date().toISOString().slice(0,10);
         <div className="flex gap-3 mt-5"><button className="btn btn-primary px-4 py-2 flex-1" onClick={save}>Save Changes</button><button className="btn btn-ghost px-4 py-2 flex-1" onClick={onClose}>Cancel</button></div>
       </Shell>;
     };
+    EditTaskModal.displayName = 'EditTaskModal';
 
     const AddGoalModal = ({onClose,onSubmit}) => {
       const [text,setText]=useState("");
@@ -121,6 +128,7 @@ const todayKey=()=>new Date().toISOString().slice(0,10);
         </div>
       </Shell>;
     };
+    AddGoalModal.displayName = 'AddGoalModal';
 
     const AddAchievementModal = ({onClose,onSubmit}) => {
       const [text,setText]=useState("");
@@ -133,6 +141,7 @@ const todayKey=()=>new Date().toISOString().slice(0,10);
         </div>
       </Shell>;
     };
+    AddAchievementModal.displayName = 'AddAchievementModal';
 
     const NotificationsModal = ({list,onClose,markAll,clearAll}) => (
       <Shell title="Notifications" onClose={onClose}>
@@ -151,6 +160,7 @@ const todayKey=()=>new Date().toISOString().slice(0,10);
         </div>
       </Shell>
     );
+    NotificationsModal.displayName = 'NotificationsModal';
 
     const AddHolidayModal=({onClose,onSubmit})=>{
       const [f,setF]=useState({date:"",name:""});
@@ -162,6 +172,7 @@ const todayKey=()=>new Date().toISOString().slice(0,10);
         </div>
       </Shell>;
     };
+    AddHolidayModal.displayName = 'AddHolidayModal';
 
     const AddOfficeModal=({onClose,onSubmit})=>{
       const [name,setName]=useState("");
@@ -172,6 +183,7 @@ const todayKey=()=>new Date().toISOString().slice(0,10);
         </div>
       </Shell>;
     };
+    AddOfficeModal.displayName = 'AddOfficeModal';
 
     const AddJobModal = ({onClose,onSubmit,departments}) => {
       const [f,setF]=useState({title:"",department:departments[0],location:"Remote / Onsite",description:"",applyUrl:""});
@@ -192,6 +204,7 @@ const todayKey=()=>new Date().toISOString().slice(0,10);
         </Shell>
       );
     };
+    AddJobModal.displayName = 'AddJobModal';
 
     const AddProjectModal = ({onClose,onSubmit}) => {
       const [f,setF]=useState({name:"",quantity:"",deadline:todayKey(),status:"not_started",link:"",file:null});
@@ -292,6 +305,7 @@ const todayKey=()=>new Date().toISOString().slice(0,10);
         </Shell>
       );
     };
+    AddProjectModal.displayName = 'AddProjectModal';
 
     const AddEmployeeModal = ({onClose, onSubmit, offices}) => {
       const [f,setF]=useState({
@@ -394,6 +408,7 @@ const todayKey=()=>new Date().toISOString().slice(0,10);
         </Shell>
       );
     };
+    AddEmployeeModal.displayName = 'AddEmployeeModal';
 
     const CelebrationsList = ({employees,customCelebrations=[]}) => {
       const upcomingBD=useMemo(()=>employees.filter(e=>e.dob && withinDays(new Date(new Date().getFullYear(), new Date(e.dob).getMonth(), new Date(e.dob).getDate()).toISOString(),30)),[employees]);
@@ -448,6 +463,7 @@ const todayKey=()=>new Date().toISOString().slice(0,10);
         </div>
       );
     };
+    CelebrationsList.displayName = 'CelebrationsList';
 
     const TopActionsAttendance = ({currentTime,todayStatus,onCheckIn,onCheckOut}) => (
       <div className="card p-6 md:col-span-2">
@@ -477,6 +493,7 @@ const todayKey=()=>new Date().toISOString().slice(0,10);
         </div>
       </div>
     );
+    TopActionsAttendance.displayName = 'TopActionsAttendance';
 
     const EmployeeView=({currentUser,currentTime,attendanceRecords,leaveRequests,tasks,announcements,holidays,eods,documents,leaveBalance,onCheckIn,onCheckOut,onOpenLeaveModal,onUpdateTaskStatus,onAddEOD,onLogout,onCancelLeave,notifications,openNotifs,openChat,goals,achievements,onOpenGoal,onOpenAch,jobs})=>{
       const todayStatus=useMemo(()=>attendanceRecords.find(r=>r.employeeId===currentUser.id&&r.dateKey===todayKey())||null,[attendanceRecords,currentUser]);
@@ -651,6 +668,7 @@ const todayKey=()=>new Date().toISOString().slice(0,10);
         </div>
       </>;
     };
+    EmployeeView.displayName = 'EmployeeView';
 
     const DepartmentBreakdown = ({employees}) => {
       const counts = useMemo(() => {
@@ -678,6 +696,7 @@ const todayKey=()=>new Date().toISOString().slice(0,10);
         </div>
       );
     };
+    DepartmentBreakdown.displayName = 'DepartmentBreakdown';
 
     const AdminView=({currentUser,employees,attendanceRecords,leaveRequests,offices,tasks,announcements,holidays,eods,documents,onOpenAddEmpModal,onOpenAddTaskModal,onOpenAddAnnouncementModal,onOpenAddHolidayModal,onOpenAddOfficeModal,onOpenAddDocModal,onLogout,onLeaveApproval,onUpdateTaskStatus,onChangeEmployeeOffice,onChangeEmployeeRole,onChangeReportingManager,onToggleEmployeeActive,onResetPassword,adminTab,setAdminTab,notifications,openNotifs,onToggleShareDoc,onDeleteDoc,openChat,jobs,onAddJob,onToggleJob,onDeleteJob,currentTime,onCheckIn,onCheckOut,onEditTask,onDeleteTask,celebrations,onOpenAddCelebration,onOpenLeaveModal,goals,achievements,onOpenGoal,onOpenAch,onSetEmpDate,onWish,onCancelLeave,onAddEOD,projects,onAddProject,onUpdateProject})=>{
       const isAdmin = currentUser.role==="admin";
@@ -1186,40 +1205,15 @@ const todayKey=()=>new Date().toISOString().slice(0,10);
             </div>
           </div>}
 
-          {adminTab==="performance" && <div className="card p-6 overflow-x-auto">
-            <div className="flex items-center justify-between mb-4"><h2 className="text-xl font-semibold">Performance (Last 30 days)</h2><span className="text-[var(--clr-muted)]">Score = Tasks (50) + Attendance (30) + EOD Activity (20)</span></div>
-            <table className="w-full min-w-[900px]">
-              <thead><tr><th>Employee</th><th>Department</th><th>Task Completion %</th><th>Days Present</th><th>Avg Hours</th><th>EOD Entries</th><th>Score</th><th>Status</th></tr></thead>
-              <tbody>
-                {employees.filter(e=>e.role==="employee").map(emp=>{
-                  const days30Ago = new Date(); days30Ago.setDate(days30Ago.getDate()-30);
-                  const tAll = tasks.filter(t=>t.assignedTo===emp.id && new Date(t.createdAt)>=days30Ago);
-                  const tDone = tAll.filter(t=>t.status==="done");
-                  const recs = attendanceRecords.filter(r=>r.employeeId===emp.id && new Date(r.checkIn)>=days30Ago && r.checkOut);
-                  const uniqueDays = new Set(recs.map(r=>r.dateKey)).size;
-                  const avgHours = recs.length? (recs.reduce((a,b)=>a+(b.hours||0),0)/recs.length):0;
-                  const eodCount = eods.filter(eo=>eo.employeeId===emp.id && new Date(eo.dateKey)>=days30Ago).length;
-                  const completionRate = tAll.length? (tDone.length/tAll.length):0.5;
-                  const attendanceRate = Math.min(uniqueDays/22,1);
-                  const activityRate = Math.min(eodCount/20,1);
-                  const score = Math.round((completionRate*50)+(attendanceRate*30)+(activityRate*20));
-                  const bucket = score>=80?"Excellent":score>=60?"Good":"Needs Attention";
-                  return (
-                    <tr key={emp.id} className="border-t border-[var(--clr-border)]">
-                      <td>{emp.name}</td>
-                      <td className="text-[var(--clr-muted)]">{emp.department}</td>
-                      <td className="text-[var(--clr-muted)]">{Math.round(completionRate*100)}%</td>
-                      <td className="text-[var(--clr-muted)]">{uniqueDays}</td>
-                      <td className="text-[var(--clr-muted)]">{avgHours.toFixed(2)}</td>
-                      <td className="text-[var(--clr-muted)]">{eodCount}</td>
-                      <td className="text-[var(--clr-primary)] font-semibold">{score}</td>
-                      <td><span className={"badge "+(bucket==="Excellent"?"bdg-done":bucket==="Good"?"bdg-progress":"bdg-todo")}>{bucket}</span></td>
-                    </tr>
-                  );
-                })}
-              </tbody>
-            </table>
-          </div>}
+          {adminTab==="performance" && (
+            <EmployeeAssessment
+              employees={employees}
+              tasks={tasks}
+              attendanceRecords={attendanceRecords}
+              eods={eods}
+              daysPeriod={30}
+            />
+          )}
 
           {adminTab==="documents" && (isAdmin || isHR) && <div className="card p-6 overflow-x-auto">
             <div className="flex items-center justify-between mb-4"><h2 className="text-xl font-semibold">Employee Documents</h2><button className="btn btn-primary px-3 py-2" onClick={onOpenAddDocModal}>Upload</button></div>
@@ -1352,7 +1346,7 @@ const todayKey=()=>new Date().toISOString().slice(0,10);
         </div>
       </>;
     };
-
+    AdminView.displayName = 'AdminView';
 
     const AddDocumentModal=({onClose,onSubmit,employees})=>{
       const [f,setF]=useState({employeeId:employees[0]?.id||"",title:"",docType:"Offer",file:null});
@@ -1380,6 +1374,7 @@ const todayKey=()=>new Date().toISOString().slice(0,10);
         </Shell>
       );
     };
+    AddDocumentModal.displayName = 'AddDocumentModal';
 
     const AddAnnouncementModal=({onClose,onSubmit})=>{
       const [f,setF]=useState({title:"",message:""});
@@ -1391,6 +1386,7 @@ const todayKey=()=>new Date().toISOString().slice(0,10);
         </div>
       </Shell>;
     };
+    AddAnnouncementModal.displayName = 'AddAnnouncementModal';
 
     const AddEODModal = ({onClose,onSubmit}) => {
       const [f,setF]=useState({date: todayKey(), project:"", task:"", hours:"", notes:""});
@@ -1407,6 +1403,7 @@ const todayKey=()=>new Date().toISOString().slice(0,10);
         </div>
       </Shell>;
     };
+    AddEODModal.displayName = 'AddEODModal';
 
     const ChatModal = ({onClose,conversations,messages,employees,currentUser,onSend,openNewChat,selectConv,selectedConvId,draft}) => {
       const myConvs = conversations.filter(c=>c.memberIds.includes(currentUser.id));
@@ -1468,6 +1465,7 @@ const todayKey=()=>new Date().toISOString().slice(0,10);
         </Shell>
       );
     };
+    ChatModal.displayName = 'ChatModal';
 
     const NewConversationModal = ({onClose,onCreate,employees,currentUser}) => {
       const [selected,setSelected]=useState([currentUser.id]);
@@ -1501,6 +1499,7 @@ const todayKey=()=>new Date().toISOString().slice(0,10);
         </Shell>
       );
     };
+    NewConversationModal.displayName = 'NewConversationModal';
 
     const App=()=>{
       const [currentUser,setCurrentUser]=useState(null);
@@ -1913,5 +1912,6 @@ const todayKey=()=>new Date().toISOString().slice(0,10);
         {notifOpen && <NotificationsModal list={myNotifs} onClose={()=>{setNotifOpen(false)}} markAll={markAllRead} clearAll={clearAllNotifs}/>} 
       </>;
     };
+    App.displayName = 'App';
 
 export default App;
