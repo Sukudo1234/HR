@@ -561,7 +561,7 @@ const AdminView = ({
 
         {adminTab === "departments" && (isAdmin || isHR) && (
           <div className="card p-6">
-            <div className="flex items-center justify-between mb-4">
+            <div className="flex items-center justify-between mb-6">
               <h2 className="text-xl font-semibold">Department Breakdown</h2>
               <div className="flex gap-2">
                 <select
@@ -593,7 +593,7 @@ const AdminView = ({
             <div className="overflow-x-auto">
               <table className="w-full min-w-[720px]">
                 <thead>
-                  <tr>
+                  <tr className="bg-[var(--clr-bg)]">
                     <th>Name</th>
                     <th>Email</th>
                     <th>Department</th>
@@ -608,21 +608,22 @@ const AdminView = ({
                       ["admin", "sub_admin", "hr"].includes(x.role)
                     );
                     return (
-                      <tr key={emp.id} className="border-t border-[var(--clr-border)]">
-                        <td>{emp.name}</td>
+                      <tr key={emp.id} className="border-t border-[var(--clr-border)] hover:bg-[#FAFAFA] transition-colors">
+                        <td className="font-medium">{emp.name}</td>
                         <td className="text-[var(--clr-muted)]">{emp.email}</td>
-                        <td className="text-[var(--clr-muted)]">{emp.department}</td>
+                        <td className="text-[var(--clr-muted)] font-medium">{emp.department}</td>
                         <td className="text-[var(--clr-muted)]">{emp.office}</td>
                         <td className="text-[var(--clr-muted)]">{emp.role}</td>
                         <td>
                           {emp.role !== "admin" ? (
                             <select
-                              className="select w-auto"
+                              className="select-table"
                               value={emp.reportingManagerId || ""}
                               onChange={e =>
                                 onChangeReportingManager(emp.id, Number(e.target.value) || null)
                               }
                             >
+                              <option value="">Select Manager</option>
                               {managers.map(m => (
                                 <option key={m.id} value={m.id}>
                                   {m.name} ({m.role})
@@ -643,119 +644,130 @@ const AdminView = ({
         )}
 
         {adminTab === "employees" && (isAdmin || isHR) && (
-          <div className="card p-6 overflow-x-auto">
-            <div className="flex items-center justify-between mb-4">
+          <div className="card p-4 sm:p-6">
+            <div className="flex items-center justify-between mb-4 sm:mb-6">
               <h2 className="text-xl font-semibold">Users / Employees</h2>
-              <button className="btn btn-primary px-3 py-2" onClick={onOpenAddEmpModal}>
+              <button className="btn btn-primary px-3 py-2 text-sm sm:px-4 sm:py-2.5 sm:text-base" onClick={onOpenAddEmpModal}>
                 Add
               </button>
             </div>
-            <table className="w-full min-w-[900px]">
-              <thead>
-                <tr>
-                  <th>Name</th>
-                  <th>Email</th>
-                  <th>Office</th>
-                  <th>Department</th>
-                  <th>Role</th>
-                  <th>Reporting Manager</th>
-                  <th>Status</th>
-                  <th>Actions</th>
-                </tr>
-              </thead>
-              <tbody>
-                {employees.map(emp => {
-                  const managers = employees.filter(x =>
-                    ["admin", "sub_admin", "hr"].includes(x.role)
-                  );
-                  return (
-                    <tr key={emp.id} className="border-t border-[var(--clr-border)]">
-                      <td>{emp.name}</td>
-                      <td className="text-[var(--clr-muted)]">{emp.email}</td>
-                      <td>
-                        <select
-                          className="select w-auto"
-                          value={emp.office}
-                          onChange={e => onChangeEmployeeOffice(emp.id, e.target.value)}
-                        >
-                          {offices.map(o => (
-                            <option key={o} value={o}>
-                              {o}
-                            </option>
-                          ))}
-                        </select>
-                      </td>
-                      <td>
-                        <span className="text-[var(--clr-muted)]">{emp.department}</span>
-                      </td>
-                      <td>
-                        <select
-                          className="select w-auto"
-                          value={emp.role}
-                          onChange={e => onChangeEmployeeRole(emp.id, e.target.value)}
-                        >
-                          {ROLES.map(r => (
-                            <option key={r} value={r}>
-                              {r}
-                            </option>
-                          ))}
-                        </select>
-                      </td>
-                      <td>
-                        {emp.role !== "admin" ? (
+            <div className="overflow-x-auto -mx-4 sm:mx-0">
+              <table className="w-full">
+                <thead>
+                  <tr className="bg-[var(--clr-bg)]">
+                    <th className="min-w-[120px]">Name</th>
+                    <th className="min-w-[150px]">Email</th>
+                    <th className="min-w-[120px]">Office</th>
+                    <th className="min-w-[110px]">Department</th>
+                    <th className="min-w-[100px]">Role</th>
+                    <th className="min-w-[150px]">Reporting Manager</th>
+                    <th className="min-w-[80px]">Status</th>
+                    <th className="min-w-[180px]">Actions</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  {employees.map(emp => {
+                    const managers = employees.filter(x =>
+                      ["admin", "sub_admin", "hr"].includes(x.role)
+                    );
+                    return (
+                      <tr key={emp.id} className="border-t border-[var(--clr-border)] hover:bg-[#FAFAFA] transition-colors">
+                        <td className="font-medium text-sm">{emp.name}</td>
+                        <td className="text-[var(--clr-muted)] text-sm truncate max-w-[150px]" title={emp.email}>{emp.email}</td>
+                        <td>
                           <select
-                            className="select w-auto"
-                            value={emp.reportingManagerId || ""}
-                            onChange={e =>
-                              onChangeReportingManager(emp.id, Number(e.target.value) || null)
-                            }
+                            className="select-table-compact"
+                            value={emp.office}
+                            onChange={e => onChangeEmployeeOffice(emp.id, e.target.value)}
                           >
-                            {managers.map(m => (
-                              <option key={m.id} value={m.id}>
-                                {m.name} ({m.role})
+                            {offices.map(o => (
+                              <option key={o} value={o}>
+                                {o}
                               </option>
                             ))}
                           </select>
-                        ) : (
-                          <span className="text-[var(--clr-muted)]">-</span>
-                        )}
-                      </td>
-                      <td className="text-[var(--clr-muted)]">
-                        {emp.active === false ? "Inactive" : "Active"}
-                      </td>
-                      <td className="flex gap-2">
-                        <button
-                          className="btn btn-ghost px-3 py-1.5"
-                          onClick={() => onToggleEmployeeActive(emp.id)}
-                        >
-                          {emp.active === false ? "Activate" : "Deactivate"}
-                        </button>
-                        <button
-                          className="btn btn-ghost px-3 py-1.5"
-                          onClick={() => onResetPassword(emp.id)}
-                        >
-                          Reset Password
-                        </button>
-                      </td>
-                    </tr>
-                  );
-                })}
-              </tbody>
-            </table>
+                        </td>
+                        <td>
+                          <span className="text-[var(--clr-muted)] font-medium text-sm">{emp.department}</span>
+                        </td>
+                        <td>
+                          <select
+                            className="select-table-compact"
+                            value={emp.role}
+                            onChange={e => onChangeEmployeeRole(emp.id, e.target.value)}
+                          >
+                            {ROLES.map(r => (
+                              <option key={r} value={r}>
+                                {r}
+                              </option>
+                            ))}
+                          </select>
+                        </td>
+                        <td>
+                          {emp.role !== "admin" ? (
+                            <select
+                              className="select-table-compact"
+                              value={emp.reportingManagerId || ""}
+                              onChange={e =>
+                                onChangeReportingManager(emp.id, Number(e.target.value) || null)
+                              }
+                            >
+                              <option value="">Select</option>
+                              {managers.map(m => (
+                                <option key={m.id} value={m.id}>
+                                  {m.name} ({m.role})
+                                </option>
+                              ))}
+                            </select>
+                          ) : (
+                            <span className="text-[var(--clr-muted)]">-</span>
+                          )}
+                        </td>
+                        <td>
+                          <span className={`inline-flex items-center px-2 py-0.5 rounded-full text-xs font-semibold ${
+                            emp.active === false 
+                              ? "bg-red-100 text-red-700" 
+                              : "bg-green-100 text-green-700"
+                          }`}>
+                            {emp.active === false ? "Inactive" : "Active"}
+                          </span>
+                        </td>
+                        <td>
+                          <div className="flex gap-1.5 flex-wrap">
+                            <button
+                              className="btn btn-ghost px-2 py-1 text-xs"
+                              onClick={() => onToggleEmployeeActive(emp.id)}
+                            >
+                              {emp.active === false ? "Activate" : "Deactivate"}
+                            </button>
+                            <button
+                              className="btn btn-ghost px-2 py-1 text-xs"
+                              onClick={() => onResetPassword(emp.id)}
+                            >
+                              Reset
+                            </button>
+                          </div>
+                        </td>
+                      </tr>
+                    );
+                  })}
+                </tbody>
+              </table>
+            </div>
           </div>
         )}
 
         {adminTab === "projects" && (isAdmin || isHR) && (
           <div className="card p-6 overflow-x-auto">
-            <div className="flex items-center justify-between mb-4">
+            <div className="flex items-center justify-between mb-6">
               <h2 className="text-xl font-semibold">Project Tracking</h2>
-              <button className="btn btn-primary px-3 py-2" onClick={onAddProject}>
+              <button className="btn btn-primary px-4 py-2.5" onClick={onAddProject}>
                 Add Project
               </button>
             </div>
             <table className="w-full min-w-[720px]">
               <thead>
-                <tr>
+                <tr className="bg-[var(--clr-bg)]">
                   <th>Project Name</th>
                   <th>Total Episodes / Quantity</th>
                   <th>Deadline</th>
@@ -766,20 +778,20 @@ const AdminView = ({
               </thead>
               <tbody>
                 {projects.map(p => (
-                  <tr key={p.id} className="border-t border-[var(--clr-border)]">
-                    <td>{p.name}</td>
+                  <tr key={p.id} className="border-t border-[var(--clr-border)] hover:bg-[#FAFAFA] transition-colors">
+                    <td className="font-medium">{p.name}</td>
                     <td className="text-[var(--clr-muted)]">{p.quantity || "-"}</td>
                     <td>
                       <input
                         type="date"
-                        className="select w-auto"
+                        className="select-table"
                         value={p.deadline ? String(p.deadline).slice(0, 10) : ""}
                         onChange={e => onUpdateProject(p.id, { deadline: e.target.value })}
                       />
                     </td>
                     <td>
                       <select
-                        className="select w-auto"
+                        className="select-table"
                         value={p.status || "not_started"}
                         onChange={e => onUpdateProject(p.id, { status: e.target.value })}
                       >
