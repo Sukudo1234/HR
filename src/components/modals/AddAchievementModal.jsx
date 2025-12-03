@@ -1,8 +1,8 @@
-import React, { useState } from 'react';
+import React, { useState, memo } from 'react';
 import Modal from '../common/Modal';
 import { todayKey } from '../../utils/helpers';
 
-const AddAchievementModal = ({ onClose, onSubmit }) => {
+const AddAchievementModal = memo(({ onClose, onSubmit }) => {
   const [text, setText] = useState("");
   const [date, setDate] = useState(todayKey());
 
@@ -45,9 +45,11 @@ const AddAchievementModal = ({ onClose, onSubmit }) => {
       </div>
     </Modal>
   );
-};
+});
 
 AddAchievementModal.displayName = 'AddAchievementModal';
 
 export default AddAchievementModal;
+
+
 

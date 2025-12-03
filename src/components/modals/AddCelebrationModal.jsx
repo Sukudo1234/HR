@@ -1,8 +1,8 @@
-import React, { useState } from 'react';
+import React, { useState, memo } from 'react';
 import Modal from '../common/Modal';
 import { todayKey } from '../../utils/helpers';
 
-const AddCelebrationModal = ({ onClose, onSubmit }) => {
+const AddCelebrationModal = memo(({ onClose, onSubmit }) => {
   const [f, setF] = useState({ date: todayKey(), title: "", description: "" });
 
   return (
@@ -53,9 +53,11 @@ const AddCelebrationModal = ({ onClose, onSubmit }) => {
       </div>
     </Modal>
   );
-};
+});
 
 AddCelebrationModal.displayName = 'AddCelebrationModal';
 
 export default AddCelebrationModal;
+
+
 

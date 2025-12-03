@@ -1,8 +1,8 @@
-import React, { useState } from 'react';
+import React, { useState, memo } from 'react';
 import Modal from '../common/Modal';
 import { todayKey } from '../../utils/helpers';
 
-const AddEODModal = ({ onClose, onSubmit }) => {
+const AddEODModal = memo(({ onClose, onSubmit }) => {
   const [f, setF] = useState({
     date: todayKey(),
     project: "",
@@ -73,9 +73,11 @@ const AddEODModal = ({ onClose, onSubmit }) => {
       </div>
     </Modal>
   );
-};
+});
 
 AddEODModal.displayName = 'AddEODModal';
 
 export default AddEODModal;
+
+
 

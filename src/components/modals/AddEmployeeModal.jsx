@@ -1,8 +1,8 @@
-import React, { useState } from 'react';
+import React, { useState, memo } from 'react';
 import Modal from '../common/Modal';
 import { DEPARTMENTS, ROLES } from '../../utils/constants';
 
-const AddEmployeeModal = ({ onClose, onSubmit, offices }) => {
+const AddEmployeeModal = memo(({ onClose, onSubmit, offices }) => {
   const [f, setF] = useState({
     name: "",
     email: "",
@@ -102,7 +102,7 @@ const AddEmployeeModal = ({ onClose, onSubmit, offices }) => {
       </form>
     </Modal>
   );
-};
+});
 
 AddEmployeeModal.displayName = 'AddEmployeeModal';
 

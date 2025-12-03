@@ -1,8 +1,8 @@
-import React, { useState } from 'react';
+import React, { useState, memo } from 'react';
 import Modal from '../common/Modal';
 import { DEPARTMENTS } from '../../utils/constants';
 
-const AddJobModal = ({ onClose, onSubmit, departments }) => {
+const AddJobModal = memo(({ onClose, onSubmit, departments }) => {
   const [f, setF] = useState({
     title: "",
     department: departments[0],
@@ -80,7 +80,7 @@ const AddJobModal = ({ onClose, onSubmit, departments }) => {
       </div>
     </Modal>
   );
-};
+});
 
 AddJobModal.displayName = 'AddJobModal';
 

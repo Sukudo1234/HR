@@ -1,25 +1,23 @@
 import React from "react";
 import Login from "./Login";
 import { EmployeeView, AdminView } from "./components/views";
-import {
-  AddTaskModal,
-  EditTaskModal,
-  AddGoalModal,
-  AddAchievementModal,
-  AddCelebrationModal,
-  AddHolidayModal,
-  AddOfficeModal,
-  AddJobModal,
-  AddProjectModal,
-  AddEmployeeModal,
-  AddDocumentModal,
-  AddAnnouncementModal,
-  AddEODModal,
-  LeaveRequestModal,
-  NotificationsModal,
-  ChatModal,
-  NewConversationModal
-} from "./components/modals";
+import AddTaskModal from "./components/modals/AddTaskModal";
+import EditTaskModal from "./components/modals/EditTaskModal";
+import AddGoalModal from "./components/modals/AddGoalModal";
+import AddAchievementModal from "./components/modals/AddAchievementModal";
+import AddCelebrationModal from "./components/modals/AddCelebrationModal";
+import AddHolidayModal from "./components/modals/AddHolidayModal";
+import AddOfficeModal from "./components/modals/AddOfficeModal";
+import AddJobModal from "./components/modals/AddJobModal";
+import AddProjectModal from "./components/modals/AddProjectModal";
+import AddEmployeeModal from "./components/modals/AddEmployeeModal";
+import AddDocumentModal from "./components/modals/AddDocumentModal";
+import AddAnnouncementModal from "./components/modals/AddAnnouncementModal";
+import AddEODModal from "./components/modals/AddEODModal";
+import LeaveRequestModal from "./components/modals/LeaveRequestModal";
+import NotificationsModal from "./components/modals/NotificationsModal";
+import ChatModal from "./components/modals/ChatModal";
+import NewConversationModal from "./components/modals/NewConversationModal";
 import { DEPARTMENTS } from "./utils/constants";
 import { useAppLogic } from "./hooks/useAppLogic";
 

@@ -1,8 +1,8 @@
-import React, { useState } from 'react';
+import React, { useState, memo } from 'react';
 import Modal from '../common/Modal';
 import { PRIORITIES } from '../../utils/constants';
 
-const AddTaskModal = ({ onClose, onSubmit, employees }) => {
+const AddTaskModal = memo(({ onClose, onSubmit, employees }) => {
   const [f, setF] = useState({
     title: "",
     description: "",
@@ -107,7 +107,7 @@ const AddTaskModal = ({ onClose, onSubmit, employees }) => {
       </div>
     </Modal>
   );
-};
+});
 
 AddTaskModal.displayName = 'AddTaskModal';
 

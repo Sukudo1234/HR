@@ -1,9 +1,9 @@
-import React, { useState } from 'react';
+import React, { useState, memo } from 'react';
 import Modal from '../common/Modal';
 import { PROJECT_STATUSES } from '../../utils/constants';
 import { todayKey } from '../../utils/helpers';
 
-const AddProjectModal = ({ onClose, onSubmit }) => {
+const AddProjectModal = memo(({ onClose, onSubmit }) => {
   const [f, setF] = useState({
     name: "",
     quantity: "",
@@ -102,7 +102,7 @@ const AddProjectModal = ({ onClose, onSubmit }) => {
       </div>
     </Modal>
   );
-};
+});
 
 AddProjectModal.displayName = 'AddProjectModal';
 

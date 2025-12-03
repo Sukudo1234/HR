@@ -17,3 +17,5 @@ export const PRIORITIES = ["hot", "general", "cold"];
 
 export const PROJECT_STATUSES = ["not_started", "in_progress", "on_hold", "completed"];
 
+
+

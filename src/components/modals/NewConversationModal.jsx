@@ -1,7 +1,7 @@
-import React, { useState } from 'react';
+import React, { useState, memo } from 'react';
 import Modal from '../common/Modal';
 
-const NewConversationModal = ({ onClose, onCreate, employees, currentUser }) => {
+const NewConversationModal = memo(({ onClose, onCreate, employees, currentUser }) => {
   const [selected, setSelected] = useState([currentUser.id]);
   const [name, setName] = useState("");
 
@@ -66,7 +66,7 @@ const NewConversationModal = ({ onClose, onCreate, employees, currentUser }) => 
       </div>
     </Modal>
   );
-};
+});
 
 NewConversationModal.displayName = 'NewConversationModal';
 

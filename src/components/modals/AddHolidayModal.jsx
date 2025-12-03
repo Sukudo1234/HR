@@ -1,7 +1,7 @@
-import React, { useState } from 'react';
+import React, { useState, memo } from 'react';
 import Modal from '../common/Modal';
 
-const AddHolidayModal = ({ onClose, onSubmit }) => {
+const AddHolidayModal = memo(({ onClose, onSubmit }) => {
   const [f, setF] = useState({ date: "", name: "" });
 
   return (
@@ -41,7 +41,7 @@ const AddHolidayModal = ({ onClose, onSubmit }) => {
       </div>
     </Modal>
   );
-};
+});
 
 AddHolidayModal.displayName = 'AddHolidayModal';
 

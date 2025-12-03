@@ -1,9 +1,9 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, memo } from 'react';
 import Modal from '../common/Modal';
 import { PRIORITIES } from '../../utils/constants';
 import { todayKey } from '../../utils/helpers';
 
-const EditTaskModal = ({ onClose, onSubmit, task, employees }) => {
+const EditTaskModal = memo(({ onClose, onSubmit, task, employees }) => {
   const [f, setF] = useState(
     task
       ? {
@@ -118,9 +118,11 @@ const EditTaskModal = ({ onClose, onSubmit, task, employees }) => {
       </div>
     </Modal>
   );
-};
+});
 
 EditTaskModal.displayName = 'EditTaskModal';
 
 export default EditTaskModal;
+
+
 

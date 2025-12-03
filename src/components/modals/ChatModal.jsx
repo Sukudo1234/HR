@@ -1,8 +1,8 @@
-import React, { useState, useMemo } from 'react';
+import React, { useState, memo } from 'react';
 import Modal from '../common/Modal';
 import { fmtTime } from '../../utils/helpers';
 
-const ChatModal = ({
+const ChatModal = memo(({
   onClose,
   conversations,
   messages,
@@ -113,7 +113,7 @@ const ChatModal = ({
       </div>
     </Modal>
   );
-};
+});
 
 ChatModal.displayName = 'ChatModal';
 

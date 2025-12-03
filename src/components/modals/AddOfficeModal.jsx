@@ -1,7 +1,7 @@
-import React, { useState } from 'react';
+import React, { useState, memo } from 'react';
 import Modal from '../common/Modal';
 
-const AddOfficeModal = ({ onClose, onSubmit }) => {
+const AddOfficeModal = memo(({ onClose, onSubmit }) => {
   const [name, setName] = useState("");
 
   return (
@@ -34,7 +34,7 @@ const AddOfficeModal = ({ onClose, onSubmit }) => {
       </div>
     </Modal>
   );
-};
+});
 
 AddOfficeModal.displayName = 'AddOfficeModal';
 

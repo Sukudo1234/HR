@@ -1,8 +1,8 @@
-import React, { useState } from 'react';
+import React, { useState, memo } from 'react';
 import Modal from '../common/Modal';
 import { todayKey } from '../../utils/helpers';
 
-const AddGoalModal = ({ onClose, onSubmit }) => {
+const AddGoalModal = memo(({ onClose, onSubmit }) => {
   const [text, setText] = useState("");
   const [date, setDate] = useState(todayKey());
 
@@ -45,9 +45,11 @@ const AddGoalModal = ({ onClose, onSubmit }) => {
       </div>
     </Modal>
   );
-};
+});
 
 AddGoalModal.displayName = 'AddGoalModal';
 
 export default AddGoalModal;
+
+
 

@@ -1,10 +1,10 @@
-import React, { useState } from 'react';
+import React, { useState, memo } from 'react';
 import Modal from '../common/Modal';
 
 /**
  * LeaveRequestModal Component - Form for requesting leave
  */
-const LeaveRequestModal = ({ onClose, onSubmit }) => {
+const LeaveRequestModal = memo(({ onClose, onSubmit }) => {
   const [formData, setFormData] = useState({
     date: '',
     type: 'sick',
@@ -59,9 +59,11 @@ const LeaveRequestModal = ({ onClose, onSubmit }) => {
       </div>
     </Modal>
   );
-};
+});
 
 LeaveRequestModal.displayName = 'LeaveRequestModal';
 
 export default LeaveRequestModal;
+
+
 

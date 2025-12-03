@@ -1,9 +1,9 @@
-import React, { useState } from 'react';
+import React, { useState, memo } from 'react';
 import Modal from '../common/Modal';
 
 const DOC_TYPES = ["Offer", "Appointment", "Intent", "Other"];
 
-const AddDocumentModal = ({ onClose, onSubmit, employees }) => {
+const AddDocumentModal = memo(({ onClose, onSubmit, employees }) => {
   const [f, setF] = useState({
     employeeId: employees[0]?.id || "",
     title: "",
@@ -79,9 +79,11 @@ const AddDocumentModal = ({ onClose, onSubmit, employees }) => {
       </div>
     </Modal>
   );
-};
+});
 
 AddDocumentModal.displayName = 'AddDocumentModal';
 
 export default AddDocumentModal;
+
+
 

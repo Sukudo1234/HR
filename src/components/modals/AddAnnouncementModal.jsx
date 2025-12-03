@@ -1,7 +1,7 @@
-import React, { useState } from 'react';
+import React, { useState, memo } from 'react';
 import Modal from '../common/Modal';
 
-const AddAnnouncementModal = ({ onClose, onSubmit }) => {
+const AddAnnouncementModal = memo(({ onClose, onSubmit }) => {
   const [f, setF] = useState({ title: "", message: "" });
 
   return (
@@ -41,9 +41,11 @@ const AddAnnouncementModal = ({ onClose, onSubmit }) => {
       </div>
     </Modal>
   );
-};
+});
 
 AddAnnouncementModal.displayName = 'AddAnnouncementModal';
 
 export default AddAnnouncementModal;
+
+
 
