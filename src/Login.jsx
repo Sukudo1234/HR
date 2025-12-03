@@ -1,6 +1,6 @@
 import React, { useState, useCallback, memo, useMemo } from "react";
 
-const DEMO_CREDENTIALS_STRING = "Demo: admin@company.com/admin123 | sub@company.com/sub123 | hr@company.com/hr123 | john@company.com/emp123";
+const DEMO_CREDENTIALS_STRING = "Demo: john@example.com/john1234 | sub@company.com/sub123 | hr@company.com/hr123 | jack@example.com/jack1234";
 
 // Parse demo credentials string into array of objects
 const parseDemoCredentials = (str) => {
@@ -19,6 +19,7 @@ const parseDemoCredentials = (str) => {
 const Login = memo(({ onLogin }) => {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
+  const [isLoading, setIsLoading] = useState(false);
 
   const demoCredentials = useMemo(() => parseDemoCredentials(DEMO_CREDENTIALS_STRING), []);
 
@@ -30,19 +31,31 @@ const Login = memo(({ onLogin }) => {
     setPassword(e.target.value);
   }, []);
 
-  const handleSubmit = useCallback((e) => {
+  const handleSubmit = useCallback(async (e) => {
     e.preventDefault();
-    onLogin(email, password);
-  }, [email, password, onLogin]);
+    if (isLoading) return;
+    setIsLoading(true);
+    try {
+      await onLogin(email, password);
+    } finally {
+      setIsLoading(false);
+    }
+  }, [email, password, onLogin, isLoading]);
 
-  const handleQuickLogin = useCallback((demoEmail, demoPassword) => {
+  const handleQuickLogin = useCallback(async (demoEmail, demoPassword) => {
+    if (isLoading) return;
     setEmail(demoEmail);
     setPassword(demoPassword);
+    setIsLoading(true);
     // Auto-submit after a brief delay for visual feedback
-    setTimeout(() => {
-      onLogin(demoEmail, demoPassword);
+    setTimeout(async () => {
+      try {
+        await onLogin(demoEmail, demoPassword);
+      } finally {
+        setIsLoading(false);
+      }
     }, 150);
-  }, [onLogin]);
+  }, [onLogin, isLoading]);
 
   return (
     <div className="min-h-screen flex items-center justify-center py-10 md:py-12">
@@ -61,6 +74,7 @@ const Login = memo(({ onLogin }) => {
               onChange={handleEmailChange}
               type="email"
               autoComplete="email"
+              disabled={isLoading}
             />
             <input
               className="input"
@@ -69,12 +83,14 @@ const Login = memo(({ onLogin }) => {
               onChange={handlePasswordChange}
               type="password"
               autoComplete="current-password"
+              disabled={isLoading}
             />
             <button
               className="btn btn-primary py-2.5"
               type="submit"
+              disabled={isLoading}
             >
-              Sign In
+              {isLoading ? "Signing in..." : "Sign In"}
             </button>
           </form>
           {demoCredentials.length > 0 && (
@@ -93,7 +109,8 @@ const Login = memo(({ onLogin }) => {
                   <button
                     key={index}
                     onClick={() => handleQuickLogin(cred.email, cred.password)}
-                    className="p-3 rounded-lg border text-left transition-all hover:shadow-sm"
+                    disabled={isLoading}
+                    className="p-3 rounded-lg border text-left transition-all hover:shadow-sm disabled:opacity-50 disabled:cursor-not-allowed"
                     style={{ 
                       borderColor: 'var(--clr-border)',
                       background: 'var(--clr-surface)'

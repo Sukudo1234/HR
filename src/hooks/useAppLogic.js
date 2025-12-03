@@ -1,6 +1,7 @@
 import { useState, useEffect, useMemo, useRef } from 'react';
 import { todayKey } from '../utils/helpers';
 import { DEPARTMENTS } from '../utils/constants';
+import { loginAPI, removeToken } from '../utils/api';
 import {
   seedEmployees,
   seedAnnouncements,
@@ -126,22 +127,28 @@ export const useAppLogic = () => {
   }, [currentTime, employees]);
 
   // Authentication
-  const login = (email, pw) => {
-    const u = employees.find(e => e.email === email && e.password === pw);
-    if (!u) {
-      alert("Invalid credentials");
-      return;
+  const login = async (email, pw) => {
+    try {
+      const response = await loginAPI(email, pw);
+      
+      // Map API response to currentUser format
+      const user = {
+        id: response.user_id,
+        email: response.email,
+        role: response.role,
+        name: response.name
+      };
+
+      setCurrentUser(user);
+      setView(user.role === "employee" ? "employee" : "admin");
+      if (user.role !== "employee") setAdminTab("overview");
+    } catch (error) {
+      alert(error.message || "Invalid credentials");
     }
-    if (u.active === false) {
-      alert("This account is deactivated.");
-      return;
-    }
-    setCurrentUser(u);
-    setView(u.role === "employee" ? "employee" : "admin");
-    if (u.role !== "employee") setAdminTab("overview");
   };
 
   const logout = () => {
+    removeToken();
     setCurrentUser(null);
     setView("login");
   };
