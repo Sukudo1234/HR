@@ -242,7 +242,13 @@ const EmployeeView = ({
                   >
                     <div>
                       <div className="font-semibold">
-                        {fmtShort(l.date)} - {l.type}
+                        {l.fromDate && l.toDate 
+                          ? (l.fromDate === l.toDate 
+                              ? fmtShort(l.fromDate) 
+                              : `${fmtShort(l.fromDate)} - ${fmtShort(l.toDate)}`)
+                          : l.date 
+                            ? fmtShort(l.date)
+                            : 'Invalid Date'} - {l.type}
                       </div>
                       <div className="text-xs text-[var(--clr-muted)]">{l.reason || "-"}</div>
                     </div>

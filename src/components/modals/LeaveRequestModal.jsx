@@ -6,14 +6,15 @@ import Modal from '../common/Modal';
  */
 const LeaveRequestModal = memo(({ onClose, onSubmit }) => {
   const [formData, setFormData] = useState({
-    date: '',
+    fromDate: '',
+    toDate: '',
     type: 'sick',
     reason: ''
   });
 
   const handleSubmit = () => {
-    if (!formData.date) {
-      alert('Pick date');
+    if (!formData.fromDate || !formData.toDate) {
+      alert('Pick from date and to date');
       return;
     }
     onSubmit(formData);
@@ -23,12 +24,21 @@ const LeaveRequestModal = memo(({ onClose, onSubmit }) => {
     <Modal title="Request Leave" onClose={onClose}>
       <div className="grid gap-4">
         <div>
-          <label className="text-[var(--clr-muted)] text-sm">Date</label>
+          <label className="text-[var(--clr-muted)] text-sm">From Date</label>
           <input
             type="date"
             className="input mt-1"
-            value={formData.date}
-            onChange={e => setFormData({ ...formData, date: e.target.value })}
+            value={formData.fromDate}
+            onChange={e => setFormData({ ...formData, fromDate: e.target.value })}
+          />
+        </div>
+        <div>
+          <label className="text-[var(--clr-muted)] text-sm">To Date</label>
+          <input
+            type="date"
+            className="input mt-1"
+            value={formData.toDate}
+            onChange={e => setFormData({ ...formData, toDate: e.target.value })}
           />
         </div>
         <div>

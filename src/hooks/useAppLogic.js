@@ -240,8 +240,14 @@ export const useAppLogic = () => {
       employees.filter(u => u.role === "hr" || u.role === "admin").forEach(u => targets.add(u.id));
     }
     Array.from(targets).forEach(uid => {
-      if (uid !== currentUser.id)
-        pushNotification(uid, `${currentUser.name} requested ${ld.type} leave on ${ld.date}.`);
+      if (uid !== currentUser.id) {
+        const dateStr = ld.fromDate && ld.toDate 
+          ? (ld.fromDate === ld.toDate 
+              ? ld.fromDate 
+              : `${ld.fromDate} to ${ld.toDate}`)
+          : ld.date || 'date';
+        pushNotification(uid, `${currentUser.name} requested ${ld.type} leave on ${dateStr}.`);
+      }
     });
   };
 
@@ -266,7 +272,14 @@ export const useAppLogic = () => {
         })
       );
     }
-    if (emp) pushNotification(emp.id, `Your leave on ${lv.date} was ${status}.`);
+    if (emp) {
+      const dateStr = lv.fromDate && lv.toDate 
+        ? (lv.fromDate === lv.toDate 
+            ? lv.fromDate 
+            : `${lv.fromDate} to ${lv.toDate}`)
+        : lv.date || 'date';
+      pushNotification(emp.id, `Your leave on ${dateStr} was ${status}.`);
+    }
   };
 
   // Documents
