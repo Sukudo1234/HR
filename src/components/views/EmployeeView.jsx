@@ -9,8 +9,6 @@ const EmployeeView = ({
   attendanceRecords,
   leaveRequests,
   tasks,
-  announcements,
-  holidays,
   eods,
   documents,
   leaveBalance,

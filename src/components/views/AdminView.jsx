@@ -1,10 +1,132 @@
-import React, { useState, useMemo } from 'react';
+import React, { useState, useMemo, useCallback, memo } from 'react';
 import Topbar from '../../Topbar';
 import { HeaderActions, AttendanceCard } from '../common';
 import { TabButton, DepartmentBreakdown, CelebrationsList, SetEmpDateForm } from '../features';
 import EmployeeAssessment from '../../EmployeeAssessment';
 import { todayKey, fmtShort, fmtTime } from '../../utils/helpers';
 import { DEPARTMENTS, ROLES, PROJECT_STATUSES } from '../../utils/constants';
+
+// Memoized Employee Table Row Component
+const EmployeeTableRow = memo(({
+  emp,
+  offices,
+  managers,
+  onChangeEmployeeOffice,
+  onChangeEmployeeRole,
+  onChangeReportingManager,
+  onToggleEmployeeActive,
+  onResetPassword
+}) => {
+  const handleOfficeChange = useCallback(
+    (e) => onChangeEmployeeOffice(emp.id, e.target.value),
+    [emp.id, onChangeEmployeeOffice]
+  );
+
+  const handleRoleChange = useCallback(
+    (e) => onChangeEmployeeRole(emp.id, e.target.value),
+    [emp.id, onChangeEmployeeRole]
+  );
+
+  const handleManagerChange = useCallback(
+    (e) => onChangeReportingManager(emp.id, Number(e.target.value) || null),
+    [emp.id, onChangeReportingManager]
+  );
+
+  const handleToggleActive = useCallback(
+    () => onToggleEmployeeActive(emp.id),
+    [emp.id, onToggleEmployeeActive]
+  );
+
+  const handleResetPassword = useCallback(
+    () => onResetPassword(emp.id),
+    [emp.id, onResetPassword]
+  );
+
+  return (
+    <tr className="border-t border-[var(--clr-border)] hover:bg-[#FAFAFA] transition-colors">
+      <td className="font-medium text-sm">{emp.name}</td>
+      <td className="text-[var(--clr-muted)] text-sm truncate max-w-[150px]" title={emp.email}>
+        {emp.email}
+      </td>
+      <td>
+        <select
+          className="select-table-compact"
+          value={emp.office}
+          onChange={handleOfficeChange}
+        >
+          {offices.map(o => (
+            <option key={o} value={o}>
+              {o}
+            </option>
+          ))}
+        </select>
+      </td>
+      <td>
+        <span className="text-[var(--clr-muted)] font-medium text-sm">{emp.department}</span>
+      </td>
+      <td>
+        <select
+          className="select-table-compact"
+          value={emp.role}
+          onChange={handleRoleChange}
+        >
+          {ROLES.map(r => (
+            <option key={r} value={r}>
+              {r}
+            </option>
+          ))}
+        </select>
+      </td>
+      <td>
+        {emp.role !== "admin" ? (
+          <select
+            className="select-table-compact"
+            value={emp.reportingManagerId || ""}
+            onChange={handleManagerChange}
+          >
+            <option value="">Select</option>
+            {managers.map(m => (
+              <option key={m.id} value={m.id}>
+                {m.name} ({m.role})
+              </option>
+            ))}
+          </select>
+        ) : (
+          <span className="text-[var(--clr-muted)]">-</span>
+        )}
+      </td>
+      <td>
+        <span
+          className={`inline-flex items-center justify-center px-2 py-0.5 rounded-full text-xs font-semibold min-w-[70px] ${
+            emp.active === false
+              ? "bg-red-100 text-red-700"
+              : "bg-green-100 text-green-700"
+          }`}
+        >
+          {emp.active === false ? "Inactive" : "Active"}
+        </span>
+      </td>
+      <td>
+        <div className="flex gap-1.5 flex-wrap">
+          <button
+            className="btn btn-ghost px-2 py-1 text-xs min-w-[80px]"
+            onClick={handleToggleActive}
+          >
+            {emp.active === false ? "Activate" : "Deactivate"}
+          </button>
+          <button
+            className="btn btn-ghost px-2 py-1 text-xs min-w-[60px]"
+            onClick={handleResetPassword}
+          >
+            Reset
+          </button>
+        </div>
+      </td>
+    </tr>
+  );
+});
+
+EmployeeTableRow.displayName = 'EmployeeTableRow';
 
 const AdminView = ({
   currentUser,
@@ -66,11 +188,6 @@ const AdminView = ({
   const isHR = currentUser.role === "hr";
   const isSub = currentUser.role === "sub_admin";
 
-  const employeesOnly = useMemo(
-    () => employees.filter(e => e.role === "employee"),
-    [employees]
-  );
-
   const myReports = useMemo(
     () => employees.filter(e => e.reportingManagerId === currentUser.id && e.role === "employee"),
     [employees, currentUser]
@@ -100,6 +217,11 @@ const AdminView = ({
           (selectedDept === "all" || e.department === selectedDept)
       ),
     [employees, myReports, selectedOffice, selectedDept, isSub]
+  );
+
+  const managers = useMemo(
+    () => employees.filter(x => ["admin", "sub_admin", "hr"].includes(x.role)),
+    [employees]
   );
 
   const filteredAttendance = useMemo(() => {
@@ -666,91 +788,19 @@ const AdminView = ({
                   </tr>
                 </thead>
                 <tbody>
-                  {employees.map(emp => {
-                    const managers = employees.filter(x =>
-                      ["admin", "sub_admin", "hr"].includes(x.role)
-                    );
-                    return (
-                      <tr key={emp.id} className="border-t border-[var(--clr-border)] hover:bg-[#FAFAFA] transition-colors">
-                        <td className="font-medium text-sm">{emp.name}</td>
-                        <td className="text-[var(--clr-muted)] text-sm truncate max-w-[150px]" title={emp.email}>{emp.email}</td>
-                        <td>
-                          <select
-                            className="select-table-compact"
-                            value={emp.office}
-                            onChange={e => onChangeEmployeeOffice(emp.id, e.target.value)}
-                          >
-                            {offices.map(o => (
-                              <option key={o} value={o}>
-                                {o}
-                              </option>
-                            ))}
-                          </select>
-                        </td>
-                        <td>
-                          <span className="text-[var(--clr-muted)] font-medium text-sm">{emp.department}</span>
-                        </td>
-                        <td>
-                          <select
-                            className="select-table-compact"
-                            value={emp.role}
-                            onChange={e => onChangeEmployeeRole(emp.id, e.target.value)}
-                          >
-                            {ROLES.map(r => (
-                              <option key={r} value={r}>
-                                {r}
-                              </option>
-                            ))}
-                          </select>
-                        </td>
-                        <td>
-                          {emp.role !== "admin" ? (
-                            <select
-                              className="select-table-compact"
-                              value={emp.reportingManagerId || ""}
-                              onChange={e =>
-                                onChangeReportingManager(emp.id, Number(e.target.value) || null)
-                              }
-                            >
-                              <option value="">Select</option>
-                              {managers.map(m => (
-                                <option key={m.id} value={m.id}>
-                                  {m.name} ({m.role})
-                                </option>
-                              ))}
-                            </select>
-                          ) : (
-                            <span className="text-[var(--clr-muted)]">-</span>
-                          )}
-                        </td>
-                        <td>
-                          <span className={`inline-flex items-center px-2 py-0.5 rounded-full text-xs font-semibold ${
-                            emp.active === false 
-                              ? "bg-red-100 text-red-700" 
-                              : "bg-green-100 text-green-700"
-                          }`}>
-                            {emp.active === false ? "Inactive" : "Active"}
-                          </span>
-                        </td>
-                        <td>
-                          <div className="flex gap-1.5 flex-wrap">
-                            <button
-                              className="btn btn-ghost px-2 py-1 text-xs"
-                              onClick={() => onToggleEmployeeActive(emp.id)}
-                            >
-                              {emp.active === false ? "Activate" : "Deactivate"}
-                            </button>
-                            <button
-                              className="btn btn-ghost px-2 py-1 text-xs"
-                              onClick={() => onResetPassword(emp.id)}
-                            >
-                              Reset
-                            </button>
-                          </div>
-                        </td>
-                      </tr>
-                    );
-                  })}
+                  {employees.map(emp => (
+                    <EmployeeTableRow
+                      key={emp.id}
+                      emp={emp}
+                      offices={offices}
+                      managers={managers}
+                      onChangeEmployeeOffice={onChangeEmployeeOffice}
+                      onChangeEmployeeRole={onChangeEmployeeRole}
+                      onChangeReportingManager={onChangeReportingManager}
+                      onToggleEmployeeActive={onToggleEmployeeActive}
+                      onResetPassword={onResetPassword}
+                    />
+                  ))}
                 </tbody>
               </table>
             </div>
